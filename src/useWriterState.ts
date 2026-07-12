@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { buildContext } from './ai';
 import { loadState, saveState } from './storage';
 import { createInitialState, uid } from './utils';
@@ -49,9 +49,10 @@ export function useWriterState() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showSearch, setShowSearch] = useState(false);
+  const lastActiveChapterIdRef = useRef(state.work.activeChapterId);
 
   const activeChapter = useMemo(
-    () => state.work.chapters.find((chapter) => chapter.id === state.work.activeChapterId) ?? state.work.chapters[0],
+    () => state.work.chapters.find((chapter) => chapter.id === state.work.activeChapterId) ?? state.work.chapters[0] ?? null,
     [state.work.activeChapterId, state.work.chapters],
   );
 
@@ -72,28 +73,25 @@ export function useWriterState() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [state]);
 
-  // Ensure at least one context chapter selected
+  // Sync context selection only when active chapter actually changes
   useEffect(() => {
-    if (!state.selectedContextChapterIds.length && activeChapter) {
-      setState((current) => ({
-        ...current,
-        selectedContextChapterIds: [activeChapter.id],
-      }));
-    }
-  }, [activeChapter, state.selectedContextChapterIds.length]);
+    const prevId = lastActiveChapterIdRef.current;
+    const currentId = state.work.activeChapterId;
+    if (prevId === currentId) return;
+    lastActiveChapterIdRef.current = currentId;
 
-  // Sync context selection when switching chapters
-  useEffect(() => {
-    if (activeChapter && state.selectedContextChapterIds.length === 1 && state.selectedContextChapterIds[0] === activeChapter.id) {
-      return;
-    }
-    if (activeChapter) {
-      setState((current) => ({
-        ...current,
-        selectedContextChapterIds: [activeChapter.id],
-      }));
-    }
-  }, [activeChapter?.id]);
+    // Reset context to new active chapter only if previous selection was just one chapter
+    setState((current) => {
+      if (current.selectedContextChapterIds.length === 1 && current.selectedContextChapterIds[0] === prevId) {
+        return { ...current, selectedContextChapterIds: [currentId] };
+      }
+      // User had multi-selected, keep their selection but ensure new chapter is included
+      if (!current.selectedContextChapterIds.includes(currentId)) {
+        return { ...current, selectedContextChapterIds: [...current.selectedContextChapterIds, currentId] };
+      }
+      return current;
+    });
+  }, [state.work.activeChapterId]);
 
   // Memoized context preview
   const contextPreview = useMemo(

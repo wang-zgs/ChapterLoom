@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/ai.ts","./src/main.tsx","./src/storage.ts","./src/types.ts"],"errors":true,"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/ai.ts","./src/main.tsx","./src/rendermarkdown.ts","./src/storage.ts","./src/types.ts","./src/usewriterstate.ts","./src/utils.ts","./src/components/chatpanel.tsx","./src/components/editorpanel.tsx","./src/components/settingsmodal.tsx"],"version":"5.9.3"}

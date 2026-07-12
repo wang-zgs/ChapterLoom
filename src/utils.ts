@@ -1,4 +1,4 @@
-import type { AppState, Chapter, Work } from './types';
+import type { AiProvider, AppState, Chapter, Work } from './types';
 
 export function uid() {
   return crypto.randomUUID();
@@ -6,6 +6,22 @@ export function uid() {
 
 export function formatTime(ts: number) {
   return new Date(ts).toLocaleString('zh-CN', { hour12: false });
+}
+
+export function createEmptyProfile(provider: AiProvider) {
+  return provider === 'ollama'
+    ? {
+        endpoint: 'http://localhost:11434',
+        apiKey: '',
+        model: 'qwen3.6:27b',
+        systemPrompt: '你是一个中文网文写作助手，回答要具体、可执行。',
+      }
+    : {
+        endpoint: 'https://api.openai.com/v1/chat/completions',
+        apiKey: '',
+        model: 'gpt-4o-mini',
+        systemPrompt: '你是一个中文网文写作助手，回答要具体、可执行。',
+      };
 }
 
 export function createDefaultWork(): Work {
