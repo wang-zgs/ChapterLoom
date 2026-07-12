@@ -123,9 +123,3 @@ server.mjs          本地 AI 代理
 ## 说明
 
 当前仓库已经具备可用的 MVP 能力，README 会持续跟随功能演进更新。
-
-## GitHub 首页建议
-
-About 描述：ChapterLoom 是一款面向长篇创作的 AI 写作工具，支持章节管理、自动保存、AI 对话、Ollama 与 OpenAI 兼容模型切换。
-
-Topics：writing, novel-writing, ai-writing, react, typescript, vite, ollama, openai-compatible, local-first, chapter-management
