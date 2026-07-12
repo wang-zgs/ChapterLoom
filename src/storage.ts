@@ -1,4 +1,5 @@
 import type { AiProvider, AppState } from './types';
+import { createInitialState } from './utils';
 
 const STORAGE_KEY = 'write-mvp-state-v1';
 
@@ -23,19 +24,42 @@ function normalizeState(raw: unknown): AppState | null {
     return null;
   }
 
+  const baseState = createInitialState();
   const state = raw as Record<string, unknown>;
   const legacySettings = state.aiSettings as Record<string, unknown> | undefined;
   const profiles = state.aiProfiles as Record<string, Record<string, unknown>> | undefined;
   const aiProvider = state.aiProvider === 'openai' ? 'openai' : 'ollama';
 
+  const work = state.work && typeof state.work === 'object' ? (state.work as AppState['work']) : baseState.work;
+  const selectedContextChapterIds = Array.isArray(state.selectedContextChapterIds)
+    ? (state.selectedContextChapterIds as string[])
+    : baseState.selectedContextChapterIds;
+  const customContext = typeof state.customContext === 'string' ? state.customContext : baseState.customContext;
+  const chat = Array.isArray(state.chat) ? (state.chat as AppState['chat']) : baseState.chat;
+  const draftQuestion = typeof state.draftQuestion === 'string' ? state.draftQuestion : baseState.draftQuestion;
+  const historyLength = typeof state.historyLength === 'number' ? state.historyLength : baseState.historyLength;
+  const characterCards = Array.isArray(state.characterCards) ? (state.characterCards as AppState['characterCards']) : baseState.characterCards;
+  const chapterSummaries = state.chapterSummaries && typeof state.chapterSummaries === 'object'
+    ? (state.chapterSummaries as AppState['chapterSummaries'])
+    : baseState.chapterSummaries;
+  const chapterSnapshots = Array.isArray(state.chapterSnapshots)
+    ? (state.chapterSnapshots as AppState['chapterSnapshots'])
+    : baseState.chapterSnapshots;
+
   if (state.work && profiles && state.selectedContextChapterIds && state.chat && state.draftQuestion !== undefined) {
     return {
+      ...baseState,
       ...state,
       aiProvider,
-      historyLength: state.historyLength ?? 6,
-      characterCards: state.characterCards ?? [],
-      chapterSummaries: state.chapterSummaries ?? {},
-      chapterSnapshots: state.chapterSnapshots ?? [],
+      work,
+      selectedContextChapterIds,
+      customContext,
+      chat,
+      draftQuestion,
+      historyLength,
+      characterCards,
+      chapterSummaries,
+      chapterSnapshots,
       aiProfiles: {
         ollama: {
           ...createEmptyProfile('ollama'),
@@ -54,15 +78,24 @@ function normalizeState(raw: unknown): AppState | null {
     const inferredProvider: AiProvider = endpoint.includes('localhost:11434') ? 'ollama' : 'openai';
 
     return {
+      ...baseState,
       ...state,
       aiProvider: inferredProvider,
-      historyLength: 6,
-      characterCards: [],
-      chapterSummaries: {},
-      chapterSnapshots: [],
+      work,
+      selectedContextChapterIds,
+      customContext,
+      chat,
+      draftQuestion,
+      historyLength,
+      characterCards,
+      chapterSummaries,
+      chapterSnapshots,
       aiProfiles: {
         ollama: createEmptyProfile('ollama'),
-        openai: createEmptyProfile('openai'),
+        openai: {
+          ...createEmptyProfile('openai'),
+          ...(inferredProvider === 'openai' ? legacySettings : {}),
+        },
       },
     } as AppState;
   }
