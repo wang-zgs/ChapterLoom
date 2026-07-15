@@ -123,3 +123,15 @@ server.mjs          本地 AI 代理
 ## 说明
 
 当前仓库已经具备可用的 MVP 能力，README 会持续跟随功能演进更新。
+
+## 智能体协作
+
+仓库根目录提供了 [AGENTS.md](AGENTS.md) 和 [CLAUDE.md](CLAUDE.md)，用于让 Codex、Claude Code 和其他智能体快速找到：
+
+- 项目入口
+- 运行命令
+- 代码结构
+- 修改约束
+- AI 模型接入约定
+
+如果你是通过智能体接手这个仓库，优先阅读这两个文件，再进入 [src/App.tsx](src/App.tsx)、[src/useWriterState.ts](src/useWriterState.ts) 和 [src/storage.ts](src/storage.ts)。
