@@ -1,6 +1,16 @@
 # ChapterLoom
 
-![ChapterLoom cover](public/cover.svg)
+<p align="center">
+  <img src="public/cover.svg" alt="ChapterLoom cover" width="800">
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react" alt="React 18.3">
+  <img src="https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript" alt="TypeScript 5.6">
+  <img src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite" alt="Vite 5.4">
+  <a href="https://github.com/wang-zgs/ChapterLoom/issues"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
+</p>
 
 ChapterLoom 是一款面向长篇创作的 AI 写作工具，支持章节管理、自动保存、全文搜索、人物 / 设定卡、章节摘要、历史版本，以及 Ollama 和 OpenAI 兼容模型接入。
 
@@ -120,6 +130,10 @@ server.mjs          本地 AI 代理
 - 桌面端打包
 - 更细的 AI 记忆系统
 
+## 许可证
+
+本项目基于 [MIT](LICENSE) 许可证开源。
+
 ## 说明
 
 当前仓库已经具备可用的 MVP 能力，README 会持续跟随功能演进更新。
@@ -135,6 +149,10 @@ server.mjs          本地 AI 代理
 - AI 模型接入约定
 
 如果你是通过智能体接手这个仓库，优先阅读这两个文件，再进入 [src/App.tsx](src/App.tsx)、[src/useWriterState.ts](src/useWriterState.ts) 和 [src/storage.ts](src/storage.ts)。
+
+---
+
+*ChapterLoom — long-form writing workspace*
 
 ## 参与贡献
 
