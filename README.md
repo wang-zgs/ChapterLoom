@@ -135,3 +135,13 @@ server.mjs          本地 AI 代理
 - AI 模型接入约定
 
 如果你是通过智能体接手这个仓库，优先阅读这两个文件，再进入 [src/App.tsx](src/App.tsx)、[src/useWriterState.ts](src/useWriterState.ts) 和 [src/storage.ts](src/storage.ts)。
+
+## 参与贡献
+
+欢迎提交 Issue 和 Pull Request。
+
+- 功能建议请优先用 Issue 描述使用场景和预期结果
+- Bug 反馈请尽量附上复现步骤和截图
+- 提交代码前建议先运行 `npm run build`
+
+仓库已经提供了 GitHub 贡献模板，方便直接发起问题和提交变更。
